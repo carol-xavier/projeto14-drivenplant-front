@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import App from "./Components/App/App.js";
+import App from "./Components/App";
 
 Render();
 export default function Render() {
