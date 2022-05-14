@@ -6,88 +6,129 @@ import styled from "styled-components";
 
 export default function SignInPage() {
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [userLogin, setUserLogin] = useState({ email: "", password: "" });
-  const [load, setLoad] = useState(false);
 
-  function login(event) {
+  function handleLogin(event) {
     event.preventDefault();
+    setIsLoading(true);
 
-    //authenticação
-    setLoad(true);
+    const { email, password } = userLogin;
+
+    axios
+      .post("http://localhost:5000/signin", { email, password })
+      .then(() => navigate("/home"))
+      .catch((err) => console.log(err));
   }
 
   return (
-    <Section>
-      <h1>DrivenPlant</h1>
-      <form onSubmit={login}>
-        <input
-          required
-          type="email"
-          value={userLogin.email}
-          placeholder="E-mail"
-          onInput={(e) => setUserLogin({ ...userLogin, email: e.target.value })}
-          disabled={load}
-        />
-        <input
-          required
-          type="password"
-          value={userLogin.password}
-          placeholder="Senha"
-          onInput={(e) =>
-            setUserLogin({ ...userLogin, password: e.target.value })
-          }
-          disabled={load}
-        />
-        <button>
-          {load ? (
-            <ThreeDots color="#FFFFFF" width="51px" height="13px" />
-          ) : (
-            <div>Entrar</div>
-          )}
-        </button>
-      </form>
-      <Link to={"/signup"}>
-        <p>Não tem uma conta? Cadastre-se aqui!</p>
-      </Link>
-    </Section>
+    <Container>
+      <Content>
+        <Title>DrivenPlant</Title>
+        <Form onSubmit={handleLogin}>
+          <input
+            required
+            type="email"
+            value={userLogin.email}
+            placeholder="E-mail"
+            onInput={(e) =>
+              setUserLogin({ ...userLogin, email: e.target.value })
+            }
+            disabled={isLoading}
+          />
+          <input
+            required
+            type="password"
+            value={userLogin.password}
+            placeholder="Senha"
+            onInput={(e) =>
+              setUserLogin({ ...userLogin, password: e.target.value })
+            }
+            disabled={isLoading}
+          />
+          <button>
+            {isLoading ? (
+              <ThreeDots color="#FFFFFF" width="51px" height="13px" />
+            ) : (
+              <div>Entrar</div>
+            )}
+          </button>
+        </Form>
+        <Link to={"/signup"}>
+          <p>Não tem uma conta? Cadastre-se aqui!</p>
+        </Link>
+      </Content>
+    </Container>
   );
 }
 
-const Section = styled.div`
-  margin-top: 15vh;
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: #6b8f71;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 1rem;
 
-  form {
-    margin-top: 15vh;
-    display: flex;
-    flex-direction: column;
+  a {
+    width: 80%;
+    max-width: 1020px;
+    margin: 0 auto;
+
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
+`;
+
+const Title = styled.h1`
+  width: 80%;
+  max-width: 1020px;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: 600;
+  color: #fff;
+`;
+
+const Form = styled.form`
+  width: 80%;
+  max-width: 1020px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 
   input {
-    margin-bottom: 2%;
-    width: 303px;
-    height: 45px;
-    left: 36px;
-    top: 279px;
-
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 25px;
-    color: #666666;
-
-    background: #ffffff;
-    border: 1px solid #d5d5d5;
-    box-sizing: border-box;
-    border-radius: 5px;
+    width: 100%;
+    background-color: #d9fff5;
+    color: #91aba4;
+    font-weight: 500;
+    border-radius: 0.2rem;
   }
 
-  input::placeholder {
-    font-family: "Lexend Deca";
-    font-weight: 400;
-    font-size: 19.976px;
-    color: #dbdbdb;
+  button {
+    width: 100%;
+    color: #fefffe;
+    font-weight: 500;
+    background-color: #1d1e18;
+    border-radius: 0.2rem;
+    cursor: pointer;
   }
 `;

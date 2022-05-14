@@ -28,9 +28,16 @@ export default function SignUpPage() {
     }
 
     axios
-      .post("", { name, email, password })
-      .then(() => navigate("/home"))
-      .catch(() => alert("Não foi possível criar a conta. Tente novamente!"));
+      .post("http://localhost:5000/signup", {
+        name,
+        email,
+        password,
+      })
+      .then(() => navigate("/signin"))
+      .catch(() => {
+        setIsLoading(false);
+        alert("Não foi possível criar a conta. Tente novamente!");
+      });
   };
 
   return (
