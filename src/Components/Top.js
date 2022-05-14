@@ -1,4 +1,1 @@
-
-export default function Top(){
-
-};
+export default function Top() {}

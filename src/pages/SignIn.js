@@ -13,12 +13,10 @@ export default function SignInPage() {
     event.preventDefault();
     setIsLoading(true);
 
-    const { email, password } = userLogin;
-
     axios
-      .post("http://localhost:5000/signin", { email, password })
+      .post("https://projeto14-drivenplant.herokuapp.com/signin", userLogin)
       .then(() => navigate("/home"))
-      .catch((err) => console.log(err));
+      .catch(() => setIsLoading(false));
   }
 
   return (
@@ -129,6 +127,8 @@ const Form = styled.form`
     font-weight: 500;
     background-color: #1d1e18;
     border-radius: 0.2rem;
+    display: grid;
+    place-items: center;
     cursor: pointer;
   }
 `;

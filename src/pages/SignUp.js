@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = React.useState(false);
   const [signUpInfos, setSignUpInfos] = React.useState({
     name: "",
@@ -28,12 +27,12 @@ export default function SignUpPage() {
     }
 
     axios
-      .post("http://localhost:5000/signup", {
+      .post("https://projeto14-drivenplant.herokuapp.com/signup", {
         name,
         email,
         password,
       })
-      .then(() => navigate("/signin"))
+      .then(() => navigate("/"))
       .catch(() => {
         setIsLoading(false);
         alert("Não foi possível criar a conta. Tente novamente!");
@@ -96,9 +95,7 @@ export default function SignUpPage() {
             )}
           </button>
         </Form>
-        <Link to={"/signin"}>
-          <p>Já tem uma conta? Faça login aqui!</p>
-        </Link>
+        <Link to={"/"}>Já tem uma conta? Faça login aqui!</Link>
       </Content>
     </Container>
   );
@@ -171,6 +168,8 @@ const Form = styled.form`
     font-weight: 500;
     background-color: #1d1e18;
     border-radius: 0.2rem;
+    display: grid;
+    place-items: center;
     cursor: pointer;
   }
 `;
