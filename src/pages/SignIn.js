@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
@@ -6,8 +6,12 @@ import styled from "styled-components";
 
 export default function SignIn({ token, setToken }) {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [userLogin, setUserLogin] = useState({ email: "", password: "" });
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [userLogin, setUserLogin] = React.useState({ email: "", password: "" });
+
+  React.useEffect(() => {
+    if (localStorage.getItem("token")) return navigate("/home");
+  }, []);
 
   function handleLogin(event) {
     event.preventDefault();
@@ -23,8 +27,6 @@ export default function SignIn({ token, setToken }) {
       })
       .catch(() => setIsLoading(false));
   }
-
-  if (localStorage.getItem("token")) return navigate("/home");
 
   return (
     <Container>
