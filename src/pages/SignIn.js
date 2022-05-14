@@ -4,7 +4,7 @@ import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
 import styled from "styled-components";
 
-export default function SignInPage() {
+export default function SignIn({ token, setToken }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [userLogin, setUserLogin] = useState({ email: "", password: "" });
@@ -15,9 +15,16 @@ export default function SignInPage() {
 
     axios
       .post("https://projeto14-drivenplant.herokuapp.com/signin", userLogin)
-      .then(() => navigate("/home"))
+      .then((res) => {
+        setIsLoading(false);
+        setToken(res.data.token);
+        localStorage.setItem("token", res.data.token);
+        navigate("/home");
+      })
       .catch(() => setIsLoading(false));
   }
+
+  if (localStorage.getItem("token")) return navigate("/home");
 
   return (
     <Container>

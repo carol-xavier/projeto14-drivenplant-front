@@ -1,1 +1,1 @@
-export default function ThankYouPage() {}
+export default function ThankYou() {}

@@ -1,1 +1,1 @@
-export default function CheckoutPage() {}
+export default function Checkout() {}
