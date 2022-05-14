@@ -1,4 +1,1 @@
-
-export default function CheckoutPage(){
-
-};
+export default function CheckoutPage() {}
