@@ -6,11 +6,11 @@ import styled from "styled-components";
 
 import UserContext from "../Contexts/UserContext";
 
-export default function SignIn({ token, setToken }) {
+export default function SignIn() {
   const navigate = useNavigate();
+  const {setToken} = React.useContext(UserContext);
   const [isLoading, setIsLoading] = React.useState(false);
   const [userLogin, setUserLogin] = React.useState({ email: "", password: "" });
-  const { setUserEmail } = React.useContext(UserContext);
 
   React.useEffect(() => {
     if (localStorage.getItem("token")) return navigate("/home");
@@ -44,7 +44,6 @@ export default function SignIn({ token, setToken }) {
             placeholder="E-mail"
             onInput={(e) => {
               setUserLogin({ ...userLogin, email: e.target.value });
-              setUserEmail(e.target.value);
             }}
             disabled={isLoading}
           />

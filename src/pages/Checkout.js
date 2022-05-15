@@ -9,67 +9,67 @@ import CartProducts from "./../Components/CartProducts";
 // import UserContext from "./../Contexts/UserContext";
 
 export default function Checkout() {
-  // const navigate = useNavigate();
-  // const { userEmail } = React.useContext(UserContext);
-  const [isLoading, setIsLoading] = React.useState(false);
-  // const [renderCheckout, setRenderCheckout] = React.useState(false);
-  const [cart, setCart] = React.useState();
+    const navigate = useNavigate();
+    const { token } = React.useContext(UserContext);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [renderCheckout, setRenderCheckout] = React.useState(false);
+    const [cart, setCart] = React.useState();
 
-  React.useEffect(() => {
-    const token = localStorage.getItem("token");
+    React.useEffect(() => {
+        const token = localStorage.getItem("token");
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        };
+
+        axios
+            .get("https://projeto14-drivenplant.herokuapp.com/cart", config)
+            .then((res) => { setCart(res); console.log("CARRINHO", cart) })
+    }, [navigate]);
+
+    function handleCart(event) {
+        event.preventDefault();
+        setIsLoading(true);
+
+        const object = {};
+
+        axios
+            .post("https://projeto14-drivenplant.herokuapp.com/checkout", object)
+            .then((res) => {
+                setIsLoading(false);
+                navigate("/thankyou", {state:{ response:res}});
+            })
     };
 
-    axios
-      .get("https://projeto14-drivenplant.herokuapp.com/cart", config)
-      .then((res) => {
-        setCart(res);
-        console.log("CARRINHO", cart);
-      });
-  }, [cart]);
-
-  function handleCart(event) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    const object = {};
-
-    axios
-      .post("https://projeto14-drivenplant.herokuapp.com/chckout", object)
-      .then((res) => {
-        setIsLoading(false);
-        //navigate
-      });
-  }
-
-  return (
-    <Section>
-      <Top />
-      {/* {renderCheckout ? ( */}
-      <Article>
-        <header>Carrinho de Compras</header>
-        <div>
-          <CartProducts cart={cart} setCart={setCart} />
-        </div>
-        <p>CPF</p>
-        <input required />
-        <p>Total (x intens): valor</p>
-        <button onClick={handleCart}>
-          {isLoading ? (
-            <ThreeDots color="#FFFFFF" width="51px" height="13px" />
-          ) : (
-            <div>Fechar Pedido</div>
-          )}
-        </button>
-      </Article>
-      {/* ) : ("TESTE") */}
-    </Section>
-  );
-}
+    return (
+        <Section>
+            <Top />
+            {renderCheckout ? (
+            <Article>
+                <header>Carrinho de Compras</header>
+                <div>
+                    <CartProducts
+                        cart={cart}
+                        setCart={setCart}
+                    />
+                </div>
+                <p>CPF</p>
+                <input required />
+                <p>Total (x intens): valor</p>
+                <button onClick={handleCart}>
+                    {isLoading ? (
+                        <ThreeDots color="#FFFFFF" width="51px" height="13px" />
+                    ) : (
+                        <div>Fechar Pedido</div>
+                    )}
+                </button>
+            </Article>
+            ) : (<div>Teste</div>)}
+        </Section>
+    );
+};
 
 const Section = styled.div`
   display: flex;
