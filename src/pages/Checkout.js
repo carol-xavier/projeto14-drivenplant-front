@@ -1,12 +1,12 @@
 import React from "react";
-// import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
 import styled from "styled-components";
 
 import Top from "./../Components/Top";
 import CartProducts from "./../Components/CartProducts";
-// import UserContext from "./../Contexts/UserContext";
+import UserContext from "./../Contexts/UserContext";
 
 export default function Checkout() {
     const navigate = useNavigate();
