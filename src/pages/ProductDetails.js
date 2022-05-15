@@ -51,7 +51,6 @@ const Container = styled.div`
   height: 100%;
   display: grid;
   place-items: center;
-  /* margin-top: 2rem; */
 `;
 
 const Content = styled.div`
@@ -85,6 +84,7 @@ const Content = styled.div`
     &.price {
       font-size: 20px;
       background-color: #fff;
+      border-radius: 1rem;
       width: 60%;
       max-width: 206px;
       text-align: center;

@@ -71,7 +71,7 @@ const Container = styled.div`
 
   strong {
     font-size: 14px;
-    color: green;
+    color: #4d6b52;
   }
 
   button {
@@ -82,7 +82,7 @@ const Container = styled.div`
     cursor: pointer;
 
     &:last-child {
-      background-color: green;
+      background-color: #4d6b52;
       color: white;
     }
   }
