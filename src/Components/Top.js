@@ -8,9 +8,9 @@ export default function Top() {
   const navigate = useNavigate();
 
   function logOff() {
-    localStorage.removeItem("token")
+    localStorage.removeItem("token");
     navigate("/");
-  };
+  }
 
   return (
     <Header>
@@ -20,7 +20,7 @@ export default function Top() {
           <RiArrowGoBackFill />
         </button>
         <p>Produtos</p>
-        <button onClick={() => navigate(`/checkout`)}>
+        <button onClick={() => navigate("/checkout")}>
           <FaShoppingCart />
         </button>
         <button onClick={logOff}>
@@ -29,43 +29,44 @@ export default function Top() {
       </div>
     </Header>
   );
-};
+}
 
 const Header = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  h1{
-    font-weight: 400;
-    font-size: 48px;
+  h1 {
+    font-weight: 600;
+    font-size: 40px;
     margin-top: 2vh;
-    margin-bottom:2vh;
+    margin-bottom: 2vh;
     line-height: 58px;
-    color: #1D1E18;
+    color: #1d1e18;
   }
 
-  div{
-    width:100%;
+  div {
+    width: 100%;
     height: 35px;
     margin-bottom: 5vh;
-    background-color: #1D1E18;
+    background-color: #1d1e18;
 
     display: flex;
     align-items: center;
     justify-content: space-evenly;
   }
 
-  p{
-    color: #AAD2B4;
+  p {
+    font-weight: 500;
+    color: #aad2b4;
   }
 
-  button{
-    height: 35px;;
-    color: #AAD2B4;
-    background-color: #1D1E18;
+  button {
+    height: 35px;
+    color: #aad2b4;
+    background-color: #1d1e18;
 
-   display: flex;
-   align-items: center;
+    display: flex;
+    align-items: center;
   }
 `;

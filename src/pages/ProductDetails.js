@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import Top from "./../Components/Top";
 
 export default function ProductDetails({ userCart, setUserCart }) {
   const navigate = useNavigate();
@@ -24,30 +25,32 @@ export default function ProductDetails({ userCart, setUserCart }) {
 
   return (
     product && (
-      <Container>
-        <Content>
-          <img src={product.image} alt={product.name} />
-          <h1>{product.name}</h1>
-          <p className="price">{formatter.format(product.price)}</p>
-          <p>{product.info}</p>
-          <div className="buttons">
-            <button>Adicionar ao carrinho</button>
-            <button className="btn-back" onClick={() => navigate(-1)}>
-              Voltar
-            </button>
-          </div>
-        </Content>
-      </Container>
+      <>
+        <Top />
+        <Container>
+          <Content>
+            <img src={product.image} alt={product.name} />
+            <h1>{product.name}</h1>
+            <p className="price">{formatter.format(product.price)}</p>
+            <p>{product.info}</p>
+            <div className="buttons">
+              <button>Adicionar ao carrinho</button>
+              <button className="btn-back" onClick={() => navigate(-1)}>
+                Voltar
+              </button>
+            </div>
+          </Content>
+        </Container>
+      </>
     )
   );
 }
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: grid;
   place-items: center;
-  margin-top: 2rem;
 `;
 
 const Content = styled.div`
@@ -81,6 +84,7 @@ const Content = styled.div`
     &.price {
       font-size: 20px;
       background-color: #fff;
+      border-radius: 1rem;
       width: 60%;
       max-width: 206px;
       text-align: center;
