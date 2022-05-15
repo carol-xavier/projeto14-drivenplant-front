@@ -4,10 +4,13 @@ import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
 import styled from "styled-components";
 
+import UserContext from '../Contexts/UserContext';
+
 export default function SignIn({ token, setToken }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
   const [userLogin, setUserLogin] = React.useState({ email: "", password: "" });
+  const { setUserEmail } = React.useContext(UserContext);
 
   React.useEffect(() => {
     if (localStorage.getItem("token")) return navigate("/home");
@@ -38,9 +41,10 @@ export default function SignIn({ token, setToken }) {
             type="email"
             value={userLogin.email}
             placeholder="E-mail"
-            onInput={(e) =>
-              setUserLogin({ ...userLogin, email: e.target.value })
-            }
+            onInput={(e) => {
+              setUserLogin({ ...userLogin, email: e.target.value });
+              setUserEmail(e.target.value);
+            }}
             disabled={isLoading}
           />
           <input

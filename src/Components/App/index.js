@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import UserContext from "../../Contexts/UserContext";
+
 import SignIn from "../../pages/SignIn";
 import SignUp from "../../pages/SignUp";
 import Home from "../../pages/Home";
@@ -8,11 +10,15 @@ import ProductDetails from "../../pages/ProductDetails";
 import Checkout from "../../pages/Checkout";
 import ThankYou from "../../pages/ThankYou";
 
-import "./index.css";
+import "../../assets/style/index.css";
 
 export default function App() {
   const [token, setToken] = React.useState(null);
   const [userCart, setUserCart] = React.useState([]);
+  const [userEmail, setUserEmail] = React.useState("")
+
+  const getEmail = { userEmail, setUserEmail };
+  console.log("testeEmail", userEmail);
 
   React.useEffect(() => {
     const tokenLS = localStorage.getItem("token");
@@ -20,7 +26,7 @@ export default function App() {
   }, []);
 
   return (
-    // <UserContext.Provider value={}>
+    <UserContext.Provider value={getEmail}>
     <BrowserRouter>
       <Routes>
         <Route
@@ -42,6 +48,6 @@ export default function App() {
         <Route path="/thankyou" element={<ThankYou />} />
       </Routes>
     </BrowserRouter>
-    // </UserContext.Provider>
+    </UserContext.Provider>
   );
 }
