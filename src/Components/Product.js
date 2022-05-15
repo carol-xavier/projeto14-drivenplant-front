@@ -12,14 +12,18 @@ export default function Product({ userCart, setUserCart, product }) {
   });
 
   const handleAddCart = () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     User: `${localStorage.getItem("token")}`,
+    //   },
+    // };
+    const email = localStorage.getItem("email");
 
     axios
-      .put("https://projeto14-drivenplant.herokuapp.com/cart", product, config)
+      .put("https://projeto14-drivenplant.herokuapp.com/cart", {
+        product,
+        email,
+      })
       .then((res) => {
         console.log(res);
         setUserCart([...userCart, product]);

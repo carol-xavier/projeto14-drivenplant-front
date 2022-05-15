@@ -14,6 +14,30 @@ export default function ProductDetails({ userCart, setUserCart }) {
     currency: "BRL",
   });
 
+  const handleAddCart = () => {
+    // const config = {
+    //   headers: {
+    //     User: `${localStorage.getItem("token")}`,
+    //   },
+    // };
+
+    const email = localStorage.getItem("email");
+
+    axios
+      .put("https://projeto14-drivenplant.herokuapp.com/cart", {
+        product,
+        email,
+      })
+      .then((res) => {
+        console.log(res);
+        setUserCart([...userCart, product]);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Não foi possível adicionar o item ao carrinho.");
+      });
+  };
+
   React.useEffect(() => {
     axios
       .get(
@@ -34,7 +58,7 @@ export default function ProductDetails({ userCart, setUserCart }) {
             <p className="price">{formatter.format(product.price)}</p>
             <p>{product.info}</p>
             <div className="buttons">
-              <button>Adicionar ao carrinho</button>
+              <button onClick={handleAddCart}>Adicionar ao carrinho</button>
               <button className="btn-back" onClick={() => navigate(-1)}>
                 Voltar
               </button>

@@ -4,7 +4,7 @@ import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
 import styled from "styled-components";
 
-import UserContext from '../Contexts/UserContext';
+import UserContext from "../Contexts/UserContext";
 
 export default function SignIn({ token, setToken }) {
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ export default function SignIn({ token, setToken }) {
         setIsLoading(false);
         setToken(res.data.token);
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("email", res.data.email);
         navigate("/home");
       })
       .catch(() => setIsLoading(false));

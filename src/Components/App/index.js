@@ -15,7 +15,7 @@ import "../../assets/style/index.css";
 export default function App() {
   const [token, setToken] = React.useState(null);
   const [userCart, setUserCart] = React.useState([]);
-  const [userEmail, setUserEmail] = React.useState("")
+  const [userEmail, setUserEmail] = React.useState("");
 
   const getEmail = { userEmail, setUserEmail };
 
@@ -26,27 +26,31 @@ export default function App() {
 
   return (
     <UserContext.Provider value={getEmail}>
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={<SignIn token={token} setToken={setToken} />}
-        />
-        <Route path="/signup" element={<SignUp />} />
-        <Route
-          path="/home"
-          element={<Home userCart={userCart} setUserCart={setUserCart} />}
-        />
-        <Route
-          path="/product-details/:productId"
-          element={
-            <ProductDetails userCart={userCart} setUserCart={setUserCart} />
-          }
-        />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/thankyou" element={<ThankYou />} />
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<SignIn token={token} setToken={setToken} />}
+          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/home"
+            element={<Home userCart={userCart} setUserCart={setUserCart} />}
+          />
+          <Route
+            path="/home/:category"
+            element={<Home userCart={userCart} setUserCart={setUserCart} />}
+          />
+          <Route
+            path="/product-details/:productId"
+            element={
+              <ProductDetails userCart={userCart} setUserCart={setUserCart} />
+            }
+          />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/thankyou" element={<ThankYou />} />
+        </Routes>
+      </BrowserRouter>
     </UserContext.Provider>
   );
 }
