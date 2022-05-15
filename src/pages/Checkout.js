@@ -36,17 +36,17 @@ export default function Checkout() {
         const object = {};
 
         axios
-            .post("https://projeto14-drivenplant.herokuapp.com/chckout", object)
+            .post("https://projeto14-drivenplant.herokuapp.com/checkout", object)
             .then((res) => {
                 setIsLoading(false);
-                //navigate
+                navigate("/thankyou", {state:{ response:res}});
             })
     };
 
     return (
         <Section>
             <Top />
-            {/* {renderCheckout ? ( */}
+            {renderCheckout ? (
             <Article>
                 <header>Carrinho de Compras</header>
                 <div>
@@ -66,7 +66,7 @@ export default function Checkout() {
                     )}
                 </button>
             </Article>
-            {/* ) : ("TESTE") */}
+            ) : (<div>Teste</div>)}
         </Section>
     );
 };

@@ -7,6 +7,8 @@ export default function CartProducts(props) {
 
     function deleteProduct(event) { 
         event.preventDefault();
+
+        const token = localStorage.getItem("token");
         const config = {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -19,8 +21,7 @@ export default function CartProducts(props) {
             .catch(() => alert("Não foi possível deletar esse item. Tente novamente mais tarde"));
     };
 
-    React.useEffect(() => {
-        cart.map((product) => {
+       return cart.map((product) => {
             const { id, name, image, info, price } = product;
 
             return <div key={id}>
@@ -34,5 +35,4 @@ export default function CartProducts(props) {
             </div>
 
         });
-    }, [setCart])
 };

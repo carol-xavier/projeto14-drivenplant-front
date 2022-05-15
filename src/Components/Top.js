@@ -16,7 +16,7 @@ export default function Top() {
     <Header>
       <h1>DrivenPlant</h1>
       <div>
-        <button onClick={() => navigate(``)}>
+        <button onClick={() => navigate(-1)}>
           <RiArrowGoBackFill />
         </button>
         <p>Produtos</p>

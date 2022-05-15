@@ -15,9 +15,8 @@ import "../../assets/style/index.css";
 export default function App() {
   const [token, setToken] = React.useState(null);
   const [userCart, setUserCart] = React.useState([]);
-  const [userEmail, setUserEmail] = React.useState("")
 
-  const getEmail = { userEmail, setUserEmail };
+  const getToken = { token, setToken };
 
   React.useEffect(() => {
     const tokenLS = localStorage.getItem("token");
@@ -25,12 +24,12 @@ export default function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={getEmail}>
+    <UserContext.Provider value={getToken}>
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={<SignIn token={token} setToken={setToken} />}
+          element={<SignIn />}
         />
         <Route path="/signup" element={<SignUp />} />
         <Route
