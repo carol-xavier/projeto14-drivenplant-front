@@ -11,7 +11,7 @@ export default function SignIn({ token, setToken }) {
 
   React.useEffect(() => {
     if (localStorage.getItem("token")) return navigate("/home");
-  }, []);
+  }, [navigate]);
 
   function handleLogin(event) {
     event.preventDefault();

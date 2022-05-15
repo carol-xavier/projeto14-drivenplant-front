@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignIn from "../../pages/SignIn";
 import SignUp from "../../pages/SignUp";
 import Home from "../../pages/Home";
-import Product from "../../pages/Product";
+import ProductDetails from "../../pages/ProductDetails";
 import Checkout from "../../pages/Checkout";
 import ThankYou from "../../pages/ThankYou";
 
@@ -12,6 +12,7 @@ import "./index.css";
 
 export default function App() {
   const [token, setToken] = React.useState(null);
+  const [userCart, setUserCart] = React.useState([]);
 
   React.useEffect(() => {
     const tokenLS = localStorage.getItem("token");
@@ -27,8 +28,16 @@ export default function App() {
           element={<SignIn token={token} setToken={setToken} />}
         />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/product" element={<Product />} />
+        <Route
+          path="/home"
+          element={<Home userCart={userCart} setUserCart={setUserCart} />}
+        />
+        <Route
+          path="/product-details/:productId"
+          element={
+            <ProductDetails userCart={userCart} setUserCart={setUserCart} />
+          }
+        />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/thankyou" element={<ThankYou />} />
       </Routes>

@@ -1,1 +1,3 @@
-export default function Top() {}
+export default function Top() {
+  return <header>Header</header>;
+}
