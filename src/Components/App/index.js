@@ -18,7 +18,6 @@ export default function App() {
   const [userEmail, setUserEmail] = React.useState("")
 
   const getEmail = { userEmail, setUserEmail };
-  console.log("testeEmail", userEmail);
 
   React.useEffect(() => {
     const tokenLS = localStorage.getItem("token");
