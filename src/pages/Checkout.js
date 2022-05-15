@@ -1,75 +1,77 @@
 import React from "react";
-// import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
 import styled from "styled-components";
 
 import Top from "./../Components/Top";
 import CartProducts from "./../Components/CartProducts";
-// import UserContext from "./../Contexts/UserContext";
+import UserContext from "./../Contexts/UserContext";
 
 export default function Checkout() {
-    const navigate = useNavigate();
-    const { token } = React.useContext(UserContext);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [renderCheckout, setRenderCheckout] = React.useState(false);
-    const [cart, setCart] = React.useState();
+  const navigate = useNavigate();
+  const { token } = React.useContext(UserContext);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [renderCheckout, setRenderCheckout] = React.useState(false);
+  const [cart, setCart] = React.useState();
 
-    React.useEffect(() => {
-        const token = localStorage.getItem("token");
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
 
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        };
-
-        axios
-            .get("https://projeto14-drivenplant.herokuapp.com/cart", config)
-            .then((res) => { setCart(res); console.log("CARRINHO", cart) })
-    }, [navigate]);
-
-    function handleCart(event) {
-        event.preventDefault();
-        setIsLoading(true);
-
-        const object = {};
-
-        axios
-            .post("https://projeto14-drivenplant.herokuapp.com/checkout", object)
-            .then((res) => {
-                setIsLoading(false);
-                navigate("/thankyou", {state:{ response:res}});
-            })
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
 
-    return (
-        <Section>
-            <Top />
-            {renderCheckout ? (
-            <Article>
-                <header>Carrinho de Compras</header>
-                <div>
-                    <CartProducts
-                        cart={cart}
-                        setCart={setCart}
-                    />
-                </div>
-                <p>CPF</p>
-                <input required />
-                <p>Total (x intens): valor</p>
-                <button onClick={handleCart}>
-                    {isLoading ? (
-                        <ThreeDots color="#FFFFFF" width="51px" height="13px" />
-                    ) : (
-                        <div>Fechar Pedido</div>
-                    )}
-                </button>
-            </Article>
-            ) : (<div>Teste</div>)}
-        </Section>
-    );
-};
+    axios
+      .get("https://projeto14-drivenplant.herokuapp.com/cart", config)
+      .then((res) => {
+        setCart(res);
+        console.log("CARRINHO", cart);
+      });
+  }, [navigate]);
+
+  function handleCart(event) {
+    event.preventDefault();
+    setIsLoading(true);
+
+    const object = {};
+
+    axios
+      .post("https://projeto14-drivenplant.herokuapp.com/checkout", object)
+      .then((res) => {
+        setIsLoading(false);
+        navigate("/thankyou", { state: { response: res } });
+      });
+  }
+
+  return (
+    <Section>
+      <Top />
+      {renderCheckout ? (
+        <Article>
+          <header>Carrinho de Compras</header>
+          <div>
+            <CartProducts cart={cart} setCart={setCart} />
+          </div>
+          <p>CPF</p>
+          <input required />
+          <p>Total (x intens): valor</p>
+          <button onClick={handleCart}>
+            {isLoading ? (
+              <ThreeDots color="#FFFFFF" width="51px" height="13px" />
+            ) : (
+              <div>Fechar Pedido</div>
+            )}
+          </button>
+        </Article>
+      ) : (
+        <div>Teste</div>
+      )}
+    </Section>
+  );
+}
 
 const Section = styled.div`
   display: flex;
