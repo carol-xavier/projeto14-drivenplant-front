@@ -12,8 +12,6 @@ export default function Product({ userCart, setUserCart, product }) {
   });
 
   const handleAddCart = () => {
-    setUserCart([...userCart, product]);
-
     const config = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -21,9 +19,15 @@ export default function Product({ userCart, setUserCart, product }) {
     };
 
     axios
-      .put("https://projeto14-drivenplant.herokuapp.com/cart", userCart, config)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .put("https://projeto14-drivenplant.herokuapp.com/cart", product, config)
+      .then((res) => {
+        console.log(res);
+        setUserCart([...userCart, product]);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Não foi possível adicionar o item ao carrinho.");
+      });
   };
 
   return (
