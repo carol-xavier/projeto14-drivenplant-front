@@ -1,41 +1,98 @@
 import React from "react";
-// import axios from "axios";
-// import Checkout from "../pages/Checkout";
+import {api} from "./../assets/api";
+import styled from "styled-components";
+
 
 export default function CartProducts(props) {
-  const { cart } = props;
+  const { cart, setCart, setTotal, formatter } = props;
 
-  // function deleteProduct(event) {
-  //   event.preventDefault();
-  //   const config = {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   };
-
-  //   axios
-  //     .put("https://projeto14-drivenplant.herokuapp.com/chckout", config)
-  //     .then(() => Checkout)
-  //     .catch(() =>
-  //       alert("Não foi possível deletar esse item. Tente novamente mais tarde")
-  //     );
-  // }
+  const token = localStorage.getItem("token");
 
   React.useEffect(() => {
-    cart.map((product) => {
-      const { id, name, image, info, price } = product;
+    let sum = 0;  
+    cart.map((prod) => {return sum += prod.price});
+    setTotal(sum);
+  }, [cart,setTotal]);
 
-      return (
-        <div key={id}>
-          <img src={image} alt={name} />
-          <div>
-            <h3>{name}</h3>
-            <div>{info}</div>
-            <h4>{price}</h4>
-            {/* <p onClick={deleteProduct}>Delete</p> */}
-          </div>
-        </div>
+  function deleteProduct(id) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    api
+      .put("/checkout", {id}, config)
+      .then(() => updateCart(id))
+      .catch(() =>
+        alert("Não foi possível deletar esse item. Tente novamente mais tarde")
       );
-    });
-  }, [cart]);
-}
+  };
+
+  function updateCart(id){
+    const newCart = cart.filter((prod) => prod.id !== id);
+    setCart(newCart);
+  };
+
+  return cart.map((product,index) => {
+    const { id, name, image, info, price } = product;
+
+    return (
+      <Section key={index}>
+        <img src={image} alt={name} />
+        <article>
+          <h3>{name}</h3>
+          <div>{info}</div>
+          <h4>{formatter.format(price)}</h4>
+          <p onClick={() => deleteProduct(id)}>Delete</p>
+        </article>
+      </Section>
+    );
+  });
+};
+
+const Section = styled.div`
+  margin-top: 2vh;
+  display:flex;
+  justify-content: space-around;
+
+  img{
+    width: 61px;
+    height: 71px;
+  }
+
+  article{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  h3{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 23px;
+  }
+  
+  div{
+    width: 230px;
+    height: 20px;
+    overflow-y: auto;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  h4{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+  }
+
+ p{
+   position:absolute;
+   right: 0;
+   bottom: 0;
+   font-size: 12px;
+   color:blue;
+ }
+
+`;

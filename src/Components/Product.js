@@ -1,6 +1,6 @@
-import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import {api} from "./../assets/api";
 import styled from "styled-components";
 
 export default function Product({ userCart, setUserCart, product }) {
@@ -14,14 +14,14 @@ export default function Product({ userCart, setUserCart, product }) {
   const handleAddCart = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `${localStorage.getItem("token")}`,
       },
     };
+    // const email = localStorage.getItem("email");
 
-    axios
-      .put("https://projeto14-drivenplant.herokuapp.com/cart", product, config)
+    api
+      .put("/cart", {product}, config)
       .then((res) => {
-        console.log(res);
         setUserCart([...userCart, product]);
       })
       .catch((err) => {

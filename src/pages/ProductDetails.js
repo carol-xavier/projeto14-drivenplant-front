@@ -1,5 +1,5 @@
-import axios from "axios";
 import React from "react";
+import { api } from "./../assets/api";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Top from "./../Components/Top";
@@ -14,10 +14,28 @@ export default function ProductDetails({ userCart, setUserCart }) {
     currency: "BRL",
   });
 
+  const handleAddCart = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    api
+      .put("/cart", { product }, config)
+      .then((res) => {
+        setUserCart([...userCart, product]);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Não foi possível adicionar o item ao carrinho.");
+      });
+  };
+
   React.useEffect(() => {
-    axios
+    api
       .get(
-        `https://projeto14-drivenplant.herokuapp.com/product?id=${productId}`
+        `/product?id=${productId}`
       )
       .then((res) => setProduct(res.data))
       .catch((err) => console.log(err));
@@ -34,7 +52,7 @@ export default function ProductDetails({ userCart, setUserCart }) {
             <p className="price">{formatter.format(product.price)}</p>
             <p>{product.info}</p>
             <div className="buttons">
-              <button>Adicionar ao carrinho</button>
+              <button onClick={handleAddCart}>Adicionar ao carrinho</button>
               <button className="btn-back" onClick={() => navigate(-1)}>
                 Voltar
               </button>

@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import UserContext from "../../Contexts/UserContext";
-
 import SignIn from "../../pages/SignIn";
 import SignUp from "../../pages/SignUp";
 import Home from "../../pages/Home";
@@ -13,18 +11,11 @@ import ThankYou from "../../pages/ThankYou";
 import "../../assets/style/index.css";
 
 export default function App() {
-  const [token, setToken] = React.useState(null);
+
   const [userCart, setUserCart] = React.useState([]);
 
-  const getToken = { token, setToken };
-
-  React.useEffect(() => {
-    const tokenLS = localStorage.getItem("token");
-    if (tokenLS) setToken(tokenLS);
-  }, []);
 
   return (
-    <UserContext.Provider value={getToken}>
     <BrowserRouter>
       <Routes>
         <Route
@@ -37,6 +28,10 @@ export default function App() {
           element={<Home userCart={userCart} setUserCart={setUserCart} />}
         />
         <Route
+          path="/home/:category"
+          element={<Home userCart={userCart} setUserCart={setUserCart} />}
+        />
+        <Route
           path="/product-details/:productId"
           element={
             <ProductDetails userCart={userCart} setUserCart={setUserCart} />
@@ -46,6 +41,5 @@ export default function App() {
         <Route path="/thankyou" element={<ThankYou />} />
       </Routes>
     </BrowserRouter>
-    </UserContext.Provider>
   );
 }

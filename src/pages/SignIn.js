@@ -1,14 +1,12 @@
 import React from "react";
+import { api } from "./../assets/api";
 import { Link, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
-import axios from "axios";
 import styled from "styled-components";
 
-import UserContext from '../Contexts/UserContext';
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const {setToken} = React.useContext(UserContext);
   const [isLoading, setIsLoading] = React.useState(false);
   const [userLogin, setUserLogin] = React.useState({ email: "", password: "" });
 
@@ -20,12 +18,12 @@ export default function SignIn() {
     event.preventDefault();
     setIsLoading(true);
 
-    axios
-      .post("https://projeto14-drivenplant.herokuapp.com/signin", userLogin)
+    api
+      .post("/signin", userLogin)
       .then((res) => {
         setIsLoading(false);
-        setToken(res.data.token);
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("email", res.data.email);
         navigate("/home");
       })
       .catch(() => setIsLoading(false));

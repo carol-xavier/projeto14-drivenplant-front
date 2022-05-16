@@ -1,75 +1,105 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
-import axios from "axios";
+import { api } from "./../assets/api";
 import styled from "styled-components";
 
 import Top from "./../Components/Top";
 import CartProducts from "./../Components/CartProducts";
-import UserContext from "./../Contexts/UserContext";
+
 
 export default function Checkout() {
-    const navigate = useNavigate();
-    const { token } = React.useContext(UserContext);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [renderCheckout, setRenderCheckout] = React.useState(false);
-    const [cart, setCart] = React.useState();
+  const navigate = useNavigate();
 
-    React.useEffect(() => {
-        const token = localStorage.getItem("token");
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [renderCheckout, setRenderCheckout] = React.useState(false);
+  const [CPF, setCPF] = React.useState("");
+  const [cart, setCart] = React.useState();
+  const [total, setTotal] = React.useState(0);
 
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        };
+  const token = localStorage.getItem("token");
+  const email = localStorage.getItem("email");
 
-        axios
-            .get("https://projeto14-drivenplant.herokuapp.com/cart", config)
-            .then((res) => { setCart(res); console.log("CARRINHO", cart) })
-    }, [navigate]);
+  const formatter = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 
-    function handleCart(event) {
-        event.preventDefault();
-        setIsLoading(true);
-
-        const object = {};
-
-        axios
-            .post("https://projeto14-drivenplant.herokuapp.com/checkout", object)
-            .then((res) => {
-                setIsLoading(false);
-                navigate("/thankyou", {state:{ response:res}});
-            })
+  React.useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
     };
 
-    return (
-        <Section>
-            <Top />
-            {renderCheckout ? (
-            <Article>
-                <header>Carrinho de Compras</header>
-                <div>
-                    <CartProducts
-                        cart={cart}
-                        setCart={setCart}
-                    />
-                </div>
-                <p>CPF</p>
-                <input required />
-                <p>Total (x intens): valor</p>
-                <button onClick={handleCart}>
-                    {isLoading ? (
-                        <ThreeDots color="#FFFFFF" width="51px" height="13px" />
-                    ) : (
-                        <div>Fechar Pedido</div>
-                    )}
-                </button>
-            </Article>
-            ) : (<div>Teste</div>)}
-        </Section>
-    );
-};
+    api
+      .get("/cart", config)
+      .then((res) => {
+        setCart(res.data);
+        setRenderCheckout(true);
+      })
+      .catch((err) => {
+        alert("Houve um erro ao buscar os produtos. Tente mais tarde!")
+      });
+  }, [token]);
+
+  function handleCart(event) {
+    event.preventDefault();
+    setIsLoading(true);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+
+    const object = { items: cart, email, CPF };
+
+    api
+      .post("/checkout", object, config)
+      .then((res) => {
+        setIsLoading(false);
+        const { status } = res;
+        navigate("/thankyou", { state: { status } });
+      })
+      .catch((err) => {
+        alert("Houve um erro ao finalizar o pedido. Tente mais tarde!");
+        setIsLoading(false);
+      });
+  };
+
+  return (
+    <Section>
+      <Top />
+      {renderCheckout ? (
+        <Article>
+          <header>Carrinho de Compras</header>
+          <List>
+            <CartProducts
+              cart={cart}
+              setCart={setCart}
+              setTotal={setTotal}
+              formatter={formatter} />
+          </List>
+          <h5>CPF</h5>
+          <input required onInput={(e) => {
+            setCPF(e.target.value);
+          }} />
+          <h5>Total ({cart.length} intens): {formatter.format(total)}</h5>
+          <button onClick={handleCart}>
+            {isLoading ? (
+              <ThreeDots color="#FFFFFF" width="51px" height="13px" />
+            ) : (
+              <div>Fechar Pedido</div>
+            )}
+          </button>
+        </Article>
+      ) : (
+        <div>Carregando</div>
+      )}
+    </Section>
+  );
+}
 
 const Section = styled.div`
   display: flex;
@@ -78,7 +108,9 @@ const Section = styled.div`
 `;
 
 const Article = styled.div`
-  margin: 0 2vw;
+  height: 77vh;
+  margin: 0vh 2vw;
+  margin-bottom: 2vh;
   padding: 2%;
   border: 1px solid #aad2b4;
 
@@ -92,17 +124,16 @@ const Article = styled.div`
     color: #1d1e18;
   }
 
-  label {
-  }
   input {
     width: 290px;
     height: 31px;
+    margin-bottom: 2vh;
     background: rgba(166, 153, 153, 0.55);
     border-radius: 15px;
   }
 
-  p {
-    font-weight: 500;
+  h5 {
+    font-weight: 600;
     font-size: 20px;
   }
 
@@ -127,4 +158,11 @@ const Article = styled.div`
   button:hover {
     text-decoration: underline;
   }
+`;
+
+const List = styled.div`
+  width: 330px;
+  height: 40vh;
+  margin-bottom: 2vh;
+  overflow-y: scroll;
 `;

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { api } from "./../assets/api";
 import { Link, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
@@ -26,8 +26,8 @@ export default function SignUp() {
       return;
     }
 
-    axios
-      .post("https://projeto14-drivenplant.herokuapp.com/signup", {
+    api
+      .post("/signup", {
         name,
         email,
         password,
